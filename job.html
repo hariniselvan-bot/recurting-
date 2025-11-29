@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stackly home</title>
+  
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+  <style>
+    /* ---------- Global custom styles ---------- */
+    :root {
+      --accent: #06b6d4; /* cyan-400 */
+      --muted: #9ca3af;
+      --card: #0f1724; /* dark card */
+    }
+
+    /* Smooth entrance animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .9s cubic-bezier(.2,.9,.2,1) both; }
+
+    @keyframes fadeScale {
+      from { opacity: 0; transform: translateY(24px) scale(.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .fade-scale { animation: fadeScale 1s ease both; }
+
+    /* Subtle float on cards */
+    .card-hover { transition: transform .35s ease, box-shadow .35s ease; }
+    .card-hover:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 18px 40px rgba(2,6,23,.6); }
+
+    /* Desktop dropdown style */
+    .dropdown-panel { min-width: 11rem; }
+
+    /* Hero overlay & text shadow */
+    .hero-overlay { background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.75)); }
+    .glow { text-shadow: 0 6px 30px rgba(6,182,212,0.08); }
+
+    /* Responsive tweaks */
+    @media (min-width:768px) {
+      .nav-center { left: 50%; transform: translateX(-50%); }
+    }
+
+    /* Accessibility focus */
+    a:focus, button:focus { outline: 3px solid rgba(6,182,212,0.18); outline-offset: 2px; }
+
+    /* small utils */
+    .muted { color: var(--muted); }
+
+    .what-we-do {
+    padding: 60px 20px;
+    text-align: center;
+    background: #050505; /* or remove if you want full black page */
+}
+
+.what-we-do h2 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #d8d8e1;
+    margin-bottom: 15px;
+}
+
+.what-we-do p {
+    color: #9eb5c7;
+    font-size: 18px;
+}
+/* Custom breakpoint: show desktop menu only at ≥1117px */
+@media (min-width: 1117px) {
+  .xl2\:flex {
+    display: flex !important;
+  }
+  .xl2\:hidden {
+    display: none !important;
+  }
+}
+.nav-active {
+  color: cyan !important;
+}
+
+
+
+  </style>
+</head>
+<body class="font-inter antialiased bg-black text-white">
+
+ 
+<!-- HEADER -->
+<header class="header fixed top-0 left-0 w-full z-50 bg-black shadow h-20 flex items-center">
+  <div class="max-w-7xl w-full mx-auto px-6 flex items-center justify-between h-full">
+
+    <!-- LOGO -->
+    <a href="index.html" class="flex items-center gap-3">
+  <img src="stackly.webp" class="w-40 h-40 object-contain" alt="Stackly logo">
+</a>
+
+     <!-- DESKTOP MENU -->
+    <nav class="hidden xl2:flex gap-8 font-semibold items-center text-white">
+
+      <div class="relative group">
+        <a href="home2.html" class="hover:text-cyan-400 flex items-center gap-1 nav-link">
+          Home 2
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </a>
+
+        <div class="absolute bg-black shadow-lg rounded-lg hidden group-hover:block 
+             w-36 top-full pt-3 z-50">
+          <a href="index.html" class="block px-4 py-2 hover:bg-gray-800 nav-link">Home </a>
+        </div>
+      </div>
+      <a href="about1.html" class="nav-link hover:text-cyan-400">About</a>
+      <a href="job.html" class="nav-link"style="color: #22d3ee !important; font-weight: 700 !important;">Job listings</a>
+      <a href="FAQ.html" class="hover:text-cyan-300">FAQ</a>
+      <a href="contact.html" class="nav-link hover:text-cyan-400">Contact📞</a>
+      <a href="login.html" class="px-5 py-2 bg-cyan-500 text-black rounded-lg hover:bg-cyan-400 nav-link">
+       Login
+      </a>
+    </nav>
+
+    <!-- MOBILE HAMBURGER (visible up to 1117px) -->
+    <button id="hamburgerBtn" class="xl2:hidden p-2 rounded-md">
+      <i class="fa-solid fa-bars text-2xl text-white"></i>
+    </button>
+
+  </div>
+</header>
+
+  
+  <!-- ================= MOBILE MENU ================= -->
+  <nav id="mobileMenu" class="hidden fixed inset-x-0 top-20 z-40 bg-black text-white border-t border-gray-800 shadow-lg">
+    <div class="px-6 py-6 flex flex-col gap-4 text-lg font-semibold">
+
+      <!-- DROPDOWN BUTTON -->
+    <button onclick="toggleMobileDrop()" 
+            class="flex items-center justify-between w-full">
+            <a href="home2.html" class="hover:text-cyan-300">Home 2</a>
+      <i class="fa-solid fa-chevron-down text-sm"></i>
+    </button>
+
+    <!-- DROPDOWN CONTENT -->
+    <div id="mobileHomeDrop" class="hidden pl-4">
+      <a href="index.html" class="block py-2 hover:text-cyan-300">Home </a>
+    </div>
+
+
+            <a href="about.html" class="nav-link hover:text-cyan-400">About</a>
+      <a href="services.html" class="nav-link hover:text-cyan-400">Services</a>
+      <a href="Dashboard.html" class="hover:text-cyan-300">dashboard📊</a>
+      <a href="contact.html" class="nav-link hover:text-cyan-400">Contact📞</a>
+
+      <a href="login.html" class="text-cyan-300 font-semibold mt-2">Login</a>
+    </div>
+  </nav>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Job Listings – Stackly Staffing</title>
+
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+    body { background: #000; color: white; }
+
+    /* Card Hover */
+    .job-card {
+        transition: .35s ease;
+        background: #0a0a0a;
+        border: 1px solid #1f1f1f;
+    }
+    .job-card:hover {
+        transform: translateY(-6px);
+        border-color: #06b6d4;
+        box-shadow: 0 0 20px rgba(6,182,212,.3);
+    }
+
+    /* Search Bar Glow */
+    .search-box:focus {
+        outline: none;
+        border-color: #06b6d4;
+        box-shadow: 0 0 15px rgba(6,182,212,.4);
+    }
+
+    /* Filter Dropdown */
+    .filter-select {
+        background: #111;
+        border: 1px solid #333;
+        color: #eee;
+        padding: 10px;
+        border-radius: 6px;
+    }
+</style>
+</head>
+<body class="font-inter">
+
+<!-- PAGE CONTAINER -->
+<div class="max-w-6xl mx-auto px-6 py-28">
+
+    <!-- TITLE -->
+    <h1 class="text-4xl font-bold mb-3">Find Your Dream Job</h1>
+    <p class="text-gray-400 mb-10">Explore top opportunities curated by our staffing & recruitment experts.</p>
+
+    <!-- SEARCH + FILTERS -->
+    <div class="flex flex-col md:flex-row gap-4 mb-10">
+
+        <!-- SEARCH -->
+        <input 
+            id="searchInput"
+            type="text" 
+            placeholder="Search by job title, skills, location..." 
+            class="w-full p-3 rounded-lg bg-black border border-gray-700 search-box"
+        />
+
+        <!-- FILTER -->
+        <select id="filterSelect" class="filter-select md:w-60">
+            <option value="all">All Jobs</option>
+            <option value="fulltime">Full Time</option>
+            <option value="parttime">Part Time</option>
+            <option value="remote">Remote</option>
+            <option value="internship">Internship</option>
+        </select>
+    </div>
+
+    <!-- JOB LISTINGS CONTAINER -->
+    <div id="jobContainer" class="grid md:grid-cols-2 gap-6">
+
+        <!-- JOB CARD 1 -->
+        <div class="job-card p-6 rounded-xl" data-type="fulltime">
+            <h2 class="text-xl font-semibold">Frontend Developer</h2>
+            <p class="text-gray-400 text-sm mt-1">Hyderabad · Full Time</p>
+            <p class="mt-4 text-gray-300">Looking for a React.js expert with strong UI/UX skills.</p>
+            <a href="contact.html">
+                <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+                    Apply Now
+                </button>
+            </a>
+        </div>
+
+        <!-- JOB CARD 2 -->
+        <div class="job-card p-6 rounded-xl" data-type="remote">
+            <h2 class="text-xl font-semibold">HR Recruiter</h2>
+            <p class="text-gray-400 text-sm mt-1">Remote · Full Time</p>
+            <p class="mt-4 text-gray-300">Hiring recruiter with experience in IT and non-IT sourcing.</p>
+            <a href="contact.html">
+                <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+                    Apply Now
+                </button>
+            </a>
+        </div>
+
+        <!-- JOB CARD 3 -->
+        <div class="job-card p-6 rounded-xl" data-type="internship">
+            <h2 class="text-xl font-semibold">Digital Marketing Intern</h2>
+            <p class="text-gray-400 text-sm mt-1">Chennai · Internship</p>
+            <p class="mt-4 text-gray-300">SEO, social media management, and content creation role.</p>
+            <a href="contact.html">
+                <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+                    Apply Now
+                </button>
+            </a>
+        </div>
+
+        <!-- JOB CARD 4 -->
+        <div class="job-card p-6 rounded-xl" data-type="parttime">
+            <h2 class="text-xl font-semibold">UI/UX Designer</h2>
+            <p class="text-gray-400 text-sm mt-1">Bangalore · Part Time</p>
+            <p class="mt-4 text-gray-300">Work with a creative team designing beautiful user experiences.</p>
+            <a href="contact.html">
+                <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+                    Apply Now
+                </button>
+            </a>
+        </div>
+<!-- JOB CARD 5 -->
+<div class="job-card p-6 rounded-xl" data-type="remote">
+    <h2 class="text-xl font-semibold">Customer Support Executive</h2>
+    <p class="text-gray-400 text-sm mt-1">Remote · Full Time</p>
+    <p class="mt-4 text-gray-300">Need English-speaking support executives for chat & email handling.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+<!-- JOB CARD 6 -->
+<div class="job-card p-6 rounded-xl" data-type="fulltime">
+    <h2 class="text-xl font-semibold">Backend Developer (Python)</h2>
+    <p class="text-gray-400 text-sm mt-1">Chennai · Full Time</p>
+    <p class="mt-4 text-gray-300">Strong Python, API development, MySQL knowledge required.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+<!-- JOB CARD 7 -->
+<div class="job-card p-6 rounded-xl" data-type="internship">
+    <h2 class="text-xl font-semibold">HR Coordinator Intern</h2>
+    <p class="text-gray-400 text-sm mt-1">Hyderabad · Internship</p>
+    <p class="mt-4 text-gray-300">Assist HR team in screening, scheduling interviews, and onboarding.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+<!-- JOB CARD 8 -->
+<div class="job-card p-6 rounded-xl" data-type="parttime">
+    <h2 class="text-xl font-semibold">Content Writer</h2>
+    <p class="text-gray-400 text-sm mt-1">Remote · Part Time</p>
+    <p class="mt-4 text-gray-300">SEO content writing for blogs, company profiles & marketing pages.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+<!-- JOB CARD 9 -->
+<div class="job-card p-6 rounded-xl" data-type="fulltime">
+    <h2 class="text-xl font-semibold">Business Development Executive</h2>
+    <p class="text-gray-400 text-sm mt-1">Bangalore · Full Time</p>
+    <p class="mt-4 text-gray-300">Handling client acquisition, lead generation & corporate tie-ups.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+<!-- JOB CARD 10 -->
+<div class="job-card p-6 rounded-xl" data-type="remote">
+    <h2 class="text-xl font-semibold">Virtual Assistant</h2>
+    <p class="text-gray-400 text-sm mt-1">Remote · Full Time</p>
+    <p class="mt-4 text-gray-300">Administrative support, scheduling, CRM updates & email handling.</p>
+    <a href="contact.html">
+        <button class="mt-5 w-full py-2 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400">
+            Apply Now
+        </button>
+    </a>
+</div>
+
+    </div>
+
+</div>
+
+<!-- FILTER + SEARCH SCRIPT -->
+<script>
+    const searchInput = document.getElementById("searchInput");
+    const filterSelect = document.getElementById("filterSelect");
+    const jobCards = document.querySelectorAll(".job-card");
+
+    function filterJobs() {
+        const searchText = searchInput.value.toLowerCase();
+        const filterValue = filterSelect.value;
+
+        jobCards.forEach(card => {
+            const type = card.getAttribute("data-type");
+            const text = card.innerText.toLowerCase();
+
+            if (
+                (filterValue === "all" || type === filterValue) &&
+                text.includes(searchText)
+            ) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    searchInput.addEventListener("keyup", filterJobs);
+    filterSelect.addEventListener("change", filterJobs);
+</script>
+
+</body>
+</html>
+
+<footer class="bg-[#0c0016] text-gray-300 py-16 px-6">
+
+  <div class="max-w-6xl mx-auto">
+
+    <!-- GRID -->
+    <div class="grid md:grid-cols-3 gap-12 items-start text-center md:text-left">
+
+      <!-- LEFT -->
+      <div>
+        <img src="stackly.webp" class="w-40 mx-auto md:mx-0 mb-3" />
+          Get your business engaged
+        </p>
+      </div>
+
+      <!-- CENTER -->
+      <div class="md:border-l md:border-gray-700 md:pl-10">
+        <h4 class="text-xl font-semibold text-white mb-4 tracking-wide">Main</h4>
+
+        <ul class="space-y-3 text-gray-300 text-sm">
+          <li><a href="home2.html" class="hover:text-white">Home </a></li>
+          <li><a href="about1.html" class="hover:text-white">About</a></li>
+          <li><a href="job.html" class="hover:text-white">Job listings</a></li>
+          <li><a href="FAQ.html" class="hover:text-white">FAQ</a></li>
+          <li><a href="contact.html" class="hover:text-white">Contact📞</a></li>
+        </ul>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="md:border-l md:border-gray-700 md:pl-10">
+        <h4 class="text-xl font-semibold text-white mb-4 tracking-wide">Social</h4>
+
+        <ul class="space-y-3 text-gray-300 text-sm">
+          <li><i class="fa-brands fa-facebook mr-2"></i> <a href="404.html" class="hover:text-white">Facebook</a></li>
+          <li><i class="fa-brands fa-twitter mr-2"></i> <a href="404.html" class="hover:text-white">Twitter</a></li>
+          <li><i class="fa-brands fa-linkedin mr-2"></i> <a href="404.html" class="hover:text-white">LinkedIn</a></li>
+          <li><i class="fa-brands fa-instagram mr-2"></i> <a href="404.html" class="hover:text-white">Instagram</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- COPYRIGHT -->
+    <div class="text-center text-gray-500 text-sm mt-12 border-t border-gray-800 pt-6">
+      © Stackly – 2025. All rights reserved.
+    </div>
+
+  </div>
+</footer>
+
+<script>
+const sections = document.querySelectorAll("section");
+
+function reveal() {
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top < window.innerHeight - 100) {
+      sec.style.opacity = "1";
+      sec.style.transform = "translateY(0)";
+    }
+  });
+}
+
+window.addEventListener("scroll", reveal);
+reveal();
+</script>
+
+</body>
+</html>
+<script>
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileHomeDrop = document.getElementById("mobileHomeDrop");
+
+  // Open/close hamburger menu
+  hamburgerBtn.addEventListener("click", () => {
+    mobileMenu.classList.toggle("hidden");
+  });
+
+  // Dropdown inside mobile menu
+  function toggleMobileDrop() {
+    mobileHomeDrop.classList.toggle("hidden");
+  }
+</script>
